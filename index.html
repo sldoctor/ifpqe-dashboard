@@ -1451,8 +1451,11 @@ function renderSchedule() {
       combined.forEach(function(t, i) {
         var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
         var yearBorder = i === 12 ? "border-left:3px solid #1a1a2e;" : "";
+        var yearKey = i < 12 ? "2026" : "2027";
+        var monthIdx = i < 12 ? i : i - 12;
+        var escapedName = p.item.replace(/'/g, "\\'").replace(/"/g, "&quot;");
 
-        html += '<td style="padding:2px 1px;' + todayStyle + yearBorder + '">';
+        html += '<td class="gantt-clickable" style="padding:2px 1px;' + todayStyle + yearBorder + '" onclick="cycleSchedCell(\'' + escapedName + '\',\'' + yearKey + '\',' + monthIdx + ')" title="Click to change">';
         if (t) {
           html += '<div class="gantt-cell gantt-cell-' + t + '" style="font-size:0.55rem;padding:2px 1px;">' + (cellLabels[t] || "") + '</div>';
         } else {
@@ -1466,6 +1469,20 @@ function renderSchedule() {
 
   html += '</tbody></table>';
   document.getElementById("schedGanttArea").innerHTML = html;
+}
+
+function cycleSchedCell(programName, year, monthIdx) {
+  var schedule = year === "2026" ? schedule2026 : schedule2027;
+  var sched = schedule[programName];
+  if (!sched) return;
+
+  var current = sched[monthIdx] || "";
+  var currentIdx = ganttStatusCycle.indexOf(current);
+  var nextIdx = (currentIdx + 1) % ganttStatusCycle.length;
+  sched[monthIdx] = ganttStatusCycle[nextIdx];
+
+  saveGanttSchedule();
+  renderSchedule();
 }
 
 initSchedFilters();
