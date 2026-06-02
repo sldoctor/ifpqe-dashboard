@@ -173,12 +173,13 @@ table.dash-table tr:hover td { background: #f8fffe; }
 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
 <div>
 <h2 style="font-size:1.1rem;color:#1a1a2e;margin-bottom:4px;">Resource Allocation</h2>
-<p style="font-size:0.78rem;color:#666;">2026 &amp; 2027 Gantt Timeline &mdash; Who needs more work and who is overloaded?</p>
+<p style="font-size:0.78rem;color:#666;">2026&ndash;2028 Gantt Timeline &mdash; Who needs more work and who is overloaded?</p>
 </div>
 <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
 <select id="raYearFilter" style="padding:7px 12px;border:1px solid #ddd;border-radius:6px;font-size:0.78rem;font-weight:600;">
 <option value="2026">2026</option>
 <option value="2027">2027</option>
+<option value="2028">2028</option>
 </select>
 <select id="raOwnerFilter" style="padding:7px 12px;border:1px solid #ddd;border-radius:6px;font-size:0.78rem;font-weight:600;">
 <option value="all">All Owners</option>
@@ -203,7 +204,7 @@ table.dash-table tr:hover td { background: #f8fffe; }
 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
 <div>
 <h2 style="font-size:1.1rem;color:#1a1a2e;margin-bottom:4px;">Program Schedule</h2>
-<p style="font-size:0.78rem;color:#666;">24-Month Gantt Chart &mdash; All programs across 2026-2027</p>
+<p style="font-size:0.78rem;color:#666;">36-Month Gantt Chart &mdash; All programs across 2026-2028</p>
 </div>
 <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
 <select id="schedOwnerFilter" style="padding:7px 12px;border:2px solid #2d6a4f;border-radius:8px;font-size:0.82rem;font-weight:600;">
@@ -1116,7 +1117,7 @@ var schedule2026 = {
   "VEGA/GEN1": Array(12).fill("eom"),
   "GEN2 (PICCINO/UNICO)": Array(12).fill("eom"),
   "24W PSU": Array(12).fill("eom"),
-  "CENTO": ["eom","eom","eom","eom","eom","eom","eom","eom","eom","eom","eom","eom"],
+  "CENTO": Array(12).fill("eom"),
   "ANDYTOWN GW": Array(12).fill("sustaining"),
   "ANDYTOWN LEAF": Array(12).fill("sustaining"),
   "EDEN": Array(12).fill("eom"),
@@ -1135,31 +1136,31 @@ var schedule2026 = {
   "PATRIA": Array(12).fill("sustaining"),
   "MERCI 5": Array(12).fill("sustaining"),
   "FIREFLY LEAF (ALC)": ["npi","npi","npi","npi","npi","npi","npi","effa","effa","sustaining","sustaining","sustaining"],
-  "LADRO": ["npi","npi","npi","npi","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "LADRO": ["npi","npi","npi","npi","npi","npi","effa","effa","effa","sustaining","sustaining","sustaining"],
   "Gen2 PSU": ["npi","npi","npi","npi","npi","npi","npi","effa","effa","sustaining","sustaining","sustaining"],
-  "ALLEGRO": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","sustaining"],
+  "ALLEGRO": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa"],
   "NOVO": ["effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "MERCI 10.1 & 10.2": ["prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","sustaining"],
-  "RETROGRADE 4G WW": ["","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "RETROGRADE 4G NA": ["npi","npi","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "RETROGRADE 5G RC": ["npi","npi","npi","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "FOGHORN": ["npi","npi","npi","npi","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "Wormhole (48)": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi"],
-  "Xenia (24)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Sterescope - Pro 8": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Sterescope - PON": ["","","","","","","","","","","",""],
-  "Bluebottle - eero Max 8": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Moorea": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Dune": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Luckin - Hotel 8 PoE": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
+  "RETROGRADE 4G WW": ["npi","npi","effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "RETROGRADE 4G NA": ["npi","npi","effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "RETROGRADE 5G RC": ["npi","npi","npi","effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "FOGHORN": ["npi","npi","npi","npi","effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining"],
+  "Wormhole (48)": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa"],
+  "Xenia (24)": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa"],
+  "Sterescope - Pro 8": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi","npi"],
+  "Sterescope - PON": ["","","","","","rfq","rfq","rfq","rfq","rfq","npi","npi"],
+  "Bluebottle - eero Max 8": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi","npi","npi","npi","npi"],
+  "Moorea": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi"],
+  "Dune": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi"],
+  "Luckin - Hotel 8 PoE": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi","npi","npi"],
   "Deja-Vu": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi"],
-  "Ritual": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
+  "Ritual": ["","","","","","","","","","","",""],
   "Telescope": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
   "ONT media converter (Dunkin) and PoE companion (Donut)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "PoE Injectors (4)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Espresso": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
+  "PoE Injectors (4)": ["","","","","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
+  "Espresso": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi","npi","npi"],
   "Tabby *1,2,3": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Jitters": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
+  "Jitters": ["","","","","","rfq","rfq","npi","npi","npi","npi","npi"],
   "Memory PRQ": ["prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","prq"]
 };
 
@@ -1168,8 +1169,59 @@ var schedule2027 = {
   "GEN2 (PICCINO/UNICO)": Array(12).fill("eom"),
   "24W PSU": Array(12).fill("eom"),
   "CENTO": Array(12).fill("eom"),
-  "ANDYTOWN GW": Array(12).fill("eom"),
+  "ANDYTOWN GW": ["eom","eom","eom","eom","eom","eom","eom","eom","eom","eom","eom","eom"],
   "ANDYTOWN LEAF": ["eom","eom","eom","eom","eom","eom","eom","eom","eom","eom","eom","eom"],
+  "EDEN": Array(12).fill("eom"),
+  "15W PSU1": Array(12).fill("sustaining"),
+  "TRIESTE": Array(12).fill("sustaining"),
+  "15W PSU2": Array(12).fill("sustaining"),
+  "27W PSU": Array(12).fill("sustaining"),
+  "FIREFLY": Array(12).fill("sustaining"),
+  "HORNBILL": Array(12).fill("sustaining"),
+  "CRANE": Array(12).fill("sustaining"),
+  "140W PSU": Array(12).fill("sustaining"),
+  "JUPITER": Array(12).fill("sustaining"),
+  "45W PSU": Array(12).fill("sustaining"),
+  "SNOWBIRD": Array(12).fill("sustaining"),
+  "30W PSU": Array(12).fill("sustaining"),
+  "PATRIA": Array(12).fill("sustaining"),
+  "MERCI 5": Array(12).fill("sustaining"),
+  "FIREFLY LEAF (ALC)": Array(12).fill("sustaining"),
+  "LADRO": Array(12).fill("sustaining"),
+  "Gen2 PSU": Array(12).fill("sustaining"),
+  "ALLEGRO": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "NOVO": Array(12).fill("sustaining"),
+  "MERCI 10.1 & 10.2": Array(12).fill("sustaining"),
+  "RETROGRADE 4G WW": Array(12).fill("sustaining"),
+  "RETROGRADE 4G NA": Array(12).fill("sustaining"),
+  "RETROGRADE 5G RC": Array(12).fill("sustaining"),
+  "FOGHORN": Array(12).fill("sustaining"),
+  "Wormhole (48)": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Xenia (24)": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Sterescope - Pro 8": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
+  "Sterescope - PON": ["npi","npi","npi","npi","npi","npi","npi","effa","effa","effa","effa","sustaining"],
+  "Bluebottle - eero Max 8": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
+  "Moorea": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa"],
+  "Dune": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa"],
+  "Luckin - Hotel 8 PoE": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
+  "Deja-Vu": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Ritual": ["","","","","","","","","","","",""],
+  "Telescope": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
+  "ONT media converter (Dunkin) and PoE companion (Donut)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
+  "PoE Injectors (4)": ["rfq","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
+  "Espresso": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
+  "Tabby *1,2,3": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa"],
+  "Jitters": ["npi","npi","npi","npi","npi","npi","effa","effa","effa","effa","sustaining","sustaining"],
+  "Memory PRQ": ["prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","effa","effa"]
+};
+
+var schedule2028 = {
+  "VEGA/GEN1": Array(12).fill("eom"),
+  "GEN2 (PICCINO/UNICO)": Array(12).fill("eom"),
+  "24W PSU": Array(12).fill("eom"),
+  "CENTO": Array(12).fill("eom"),
+  "ANDYTOWN GW": Array(12).fill("eom"),
+  "ANDYTOWN LEAF": Array(12).fill("eom"),
   "EDEN": Array(12).fill("eom"),
   "15W PSU1": Array(12).fill("sustaining"),
   "TRIESTE": Array(12).fill("sustaining"),
@@ -1194,24 +1246,24 @@ var schedule2027 = {
   "RETROGRADE 4G WW": Array(12).fill("sustaining"),
   "RETROGRADE 4G NA": Array(12).fill("sustaining"),
   "RETROGRADE 5G RC": Array(12).fill("sustaining"),
-  "FOGHORN": ["npi","npi","npi","npi","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "Wormhole (48)": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "Xenia (24)": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "Sterescope - Pro 8": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Sterescope - PON": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Bluebottle - eero Max 8": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Moorea": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Dune": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Luckin - Hotel 8 PoE": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Deja-Vu": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Ritual": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
+  "FOGHORN": Array(12).fill("sustaining"),
+  "Wormhole (48)": Array(12).fill("sustaining"),
+  "Xenia (24)": Array(12).fill("sustaining"),
+  "Sterescope - Pro 8": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Sterescope - PON": ["sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Bluebottle - eero Max 8": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Moorea": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Dune": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Luckin - Hotel 8 PoE": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Deja-Vu": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Ritual": ["","","","","","","","","","","",""],
   "Telescope": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
   "ONT media converter (Dunkin) and PoE companion (Donut)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "PoE Injectors (4)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Espresso": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Tabby *1,2,3": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Jitters": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Memory PRQ": ["prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","prq"]
+  "PoE Injectors (4)": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Espresso": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Tabby *1,2,3": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Jitters": ["sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Memory PRQ": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"]
 };
 
 var cellLabels = {
@@ -1245,7 +1297,7 @@ function initRAFilters() {
 function renderResourceAllocation() {
   var year = document.getElementById("raYearFilter").value;
   var ownerFilter = document.getElementById("raOwnerFilter").value;
-  var schedule = year === "2026" ? schedule2026 : schedule2027;
+  var schedule = year === "2026" ? schedule2026 : (year === "2027" ? schedule2027 : schedule2028);
 
   var filteredOwners = owners;
   if (ownerFilter !== "all") {
@@ -1338,7 +1390,7 @@ var ganttStatusCycle = ["","sustaining","npi","effa","eom","prq","rfq"];
 
 function cycleGanttCell(programName, monthIdx) {
   var year = document.getElementById("raYearFilter").value;
-  var schedule = year === "2026" ? schedule2026 : schedule2027;
+  var schedule = year === "2026" ? schedule2026 : (year === "2027" ? schedule2027 : schedule2028);
   var sched = schedule[programName];
   if (!sched) return;
 
@@ -1355,6 +1407,7 @@ function saveGanttSchedule() {
   try {
     localStorage.setItem("ifpqe_gantt_2026", JSON.stringify(schedule2026));
     localStorage.setItem("ifpqe_gantt_2027", JSON.stringify(schedule2027));
+    localStorage.setItem("ifpqe_gantt_2028", JSON.stringify(schedule2028));
   } catch(e) {}
 }
 
@@ -1362,6 +1415,7 @@ function loadGanttSchedule() {
   try {
     var saved2026 = localStorage.getItem("ifpqe_gantt_2026");
     var saved2027 = localStorage.getItem("ifpqe_gantt_2027");
+    var saved2028 = localStorage.getItem("ifpqe_gantt_2028");
     if (saved2026) {
       var data = JSON.parse(saved2026);
       Object.keys(data).forEach(function(k) { schedule2026[k] = data[k]; });
@@ -1369,6 +1423,10 @@ function loadGanttSchedule() {
     if (saved2027) {
       var data = JSON.parse(saved2027);
       Object.keys(data).forEach(function(k) { schedule2027[k] = data[k]; });
+    }
+    if (saved2028) {
+      var data = JSON.parse(saved2028);
+      Object.keys(data).forEach(function(k) { schedule2028[k] = data[k]; });
     }
   } catch(e) {}
 }
@@ -1402,40 +1460,41 @@ function renderSchedule() {
   var allMonths = [];
   for (var m = 0; m < 12; m++) allMonths.push({label: months[m] + " '26", year: "2026", idx: m});
   for (var m = 0; m < 12; m++) allMonths.push({label: months[m] + " '27", year: "2027", idx: m});
+  for (var m = 0; m < 12; m++) allMonths.push({label: months[m] + " '28", year: "2028", idx: m});
 
   var now = new Date();
   var currentMonthCol = -1;
   if (now.getFullYear() === 2026) currentMonthCol = now.getMonth();
   else if (now.getFullYear() === 2027) currentMonthCol = 12 + now.getMonth();
+  else if (now.getFullYear() === 2028) currentMonthCol = 24 + now.getMonth();
 
-  var html = '<table class="gantt-table" style="min-width:1200px;">';
+  var html = '<table class="gantt-table" style="min-width:1600px;">';
   html += '<thead><tr><th class="gantt-name-col">Program</th><th>DRI</th>';
   allMonths.forEach(function(m, i) {
     var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
-    var yearBorder = i === 12 ? "border-left:3px solid #1a1a2e;" : "";
-    html += '<th style="min-width:42px;font-size:0.6rem;' + todayStyle + yearBorder + '">' + m.label + '</th>';
+    var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
+    html += '<th style="min-width:38px;font-size:0.55rem;' + todayStyle + yearBorder + '">' + m.label + '</th>';
   });
   html += '</tr></thead><tbody>';
 
   filteredOwners.forEach(function(owner) {
     var ownerPrograms = owner.programs;
 
-    // Filter by type if needed
     if (typeFilter !== "all") {
       ownerPrograms = ownerPrograms.filter(function(p) {
         var s26 = schedule2026[p.item] || [];
         var s27 = schedule2027[p.item] || [];
-        return s26.indexOf(typeFilter) > -1 || s27.indexOf(typeFilter) > -1;
+        var s28 = schedule2028[p.item] || [];
+        return s26.indexOf(typeFilter) > -1 || s27.indexOf(typeFilter) > -1 || s28.indexOf(typeFilter) > -1;
       });
     }
 
     if (ownerPrograms.length === 0) return;
 
-    // Owner header
     html += '<tr class="gantt-owner-row"><td class="gantt-name-cell" colspan="2">' + owner.name + ' (' + ownerPrograms.length + ')</td>';
     allMonths.forEach(function(m, i) {
       var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
-      var yearBorder = i === 12 ? "border-left:3px solid #1a1a2e;" : "";
+      var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
       html += '<td style="' + todayStyle + yearBorder + '"></td>';
     });
     html += '</tr>';
@@ -1443,16 +1502,17 @@ function renderSchedule() {
     ownerPrograms.forEach(function(p) {
       var s26 = schedule2026[p.item] || Array(12).fill("");
       var s27 = schedule2027[p.item] || Array(12).fill("");
-      var combined = s26.concat(s27);
+      var s28 = schedule2028[p.item] || Array(12).fill("");
+      var combined = s26.concat(s27).concat(s28);
 
       html += '<tr><td class="gantt-name-cell">' + p.item + '</td>';
       html += '<td class="gantt-dri">' + owner.name + '</td>';
 
       combined.forEach(function(t, i) {
         var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
-        var yearBorder = i === 12 ? "border-left:3px solid #1a1a2e;" : "";
-        var yearKey = i < 12 ? "2026" : "2027";
-        var monthIdx = i < 12 ? i : i - 12;
+        var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
+        var yearKey = i < 12 ? "2026" : (i < 24 ? "2027" : "2028");
+        var monthIdx = i < 12 ? i : (i < 24 ? i - 12 : i - 24);
         var escapedName = p.item.replace(/'/g, "\\'").replace(/"/g, "&quot;");
 
         html += '<td class="gantt-clickable" style="padding:2px 1px;' + todayStyle + yearBorder + '" onclick="cycleSchedCell(\'' + escapedName + '\',\'' + yearKey + '\',' + monthIdx + ')" title="Click to change">';
@@ -1472,7 +1532,7 @@ function renderSchedule() {
 }
 
 function cycleSchedCell(programName, year, monthIdx) {
-  var schedule = year === "2026" ? schedule2026 : schedule2027;
+  var schedule = year === "2026" ? schedule2026 : (year === "2027" ? schedule2027 : schedule2028);
   var sched = schedule[programName];
   if (!sched) return;
 
