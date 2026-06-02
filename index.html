@@ -139,6 +139,7 @@ table.dash-table tr:hover td { background: #f8fffe; }
 
 <div class="main-tabs">
 <button class="main-tab active" data-mtab="mtab-allocation">Resource Allocation</button>
+<button class="main-tab" data-mtab="mtab-schedule">Schedule</button>
 <button class="main-tab" data-mtab="mtab-owners">Owners</button>
 <button class="main-tab" data-mtab="mtab-analysis">Analysis</button>
 <button class="main-tab" data-mtab="mtab-program">Deliverable Lists</button>
@@ -195,6 +196,41 @@ table.dash-table tr:hover td { background: #f8fffe; }
 <div class="ra-summary-cards" id="raSummaryCards"></div>
 </div>
 <div id="raGanttArea" style="overflow-x:auto;"></div>
+</div>
+
+<div id="mtab-schedule" class="main-tab-content">
+<div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:20px 24px;margin-bottom:24px;">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+<div>
+<h2 style="font-size:1.1rem;color:#1a1a2e;margin-bottom:4px;">Program Schedule</h2>
+<p style="font-size:0.78rem;color:#666;">24-Month Gantt Chart &mdash; All programs across 2026-2027</p>
+</div>
+<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+<select id="schedOwnerFilter" style="padding:7px 12px;border:2px solid #2d6a4f;border-radius:8px;font-size:0.82rem;font-weight:600;">
+<option value="all">All Owners</option>
+</select>
+<select id="schedTypeFilter" style="padding:7px 12px;border:1px solid #ddd;border-radius:8px;font-size:0.82rem;font-weight:600;">
+<option value="all">All Types</option>
+<option value="sustaining">Sustaining</option>
+<option value="npi">NPI</option>
+<option value="effa">EFFA</option>
+<option value="eom">EOM</option>
+<option value="prq">PRQ</option>
+<option value="rfq">RFQ</option>
+</select>
+</div>
+</div>
+<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;font-size:0.72rem;">
+<span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:3px;background:#16a34a;display:inline-block"></span> Sustaining</span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:3px;background:#2563eb;display:inline-block"></span> NPI</span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:3px;background:#7c3aed;display:inline-block"></span> EFFA</span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:3px;background:#dc2626;display:inline-block"></span> EOM/EOS</span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:3px;background:#d97706;display:inline-block"></span> PRQ</span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:3px;background:#9ca3af;display:inline-block"></span> RFQ</span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:3px;height:14px;background:#ef4444;display:inline-block"></span> Today</span>
+</div>
+</div>
+<div id="schedGanttArea" style="overflow-x:auto;"></div>
 </div>
 
 <div id="mtab-owners" class="main-tab-content">
@@ -827,6 +863,7 @@ document.querySelectorAll(".main-tab").forEach(function(tab) {
     if (tab.getAttribute("data-mtab") === "mtab-dashboard") renderDashboard();
     if (tab.getAttribute("data-mtab") === "mtab-allocation") renderResourceAllocation();
     if (tab.getAttribute("data-mtab") === "mtab-analysis") renderAnalysis();
+    if (tab.getAttribute("data-mtab") === "mtab-schedule") renderSchedule();
   });
 });
 
@@ -1341,6 +1378,99 @@ initRAFilters();
 
 document.getElementById("raOwnerFilter").addEventListener("change", renderResourceAllocation);
 document.getElementById("raYearFilter").addEventListener("change", renderResourceAllocation);
+
+// Schedule Tab - 24-Month Gantt
+function initSchedFilters() {
+  var sel = document.getElementById("schedOwnerFilter");
+  owners.forEach(function(o) {
+    var opt = document.createElement("option");
+    opt.value = o.name;
+    opt.textContent = o.name;
+    sel.appendChild(opt);
+  });
+}
+
+function renderSchedule() {
+  var ownerFilter = document.getElementById("schedOwnerFilter").value;
+  var typeFilter = document.getElementById("schedTypeFilter").value;
+
+  var filteredOwners = owners;
+  if (ownerFilter !== "all") {
+    filteredOwners = owners.filter(function(o) { return o.name === ownerFilter; });
+  }
+
+  var allMonths = [];
+  for (var m = 0; m < 12; m++) allMonths.push({label: months[m] + " '26", year: "2026", idx: m});
+  for (var m = 0; m < 12; m++) allMonths.push({label: months[m] + " '27", year: "2027", idx: m});
+
+  var now = new Date();
+  var currentMonthCol = -1;
+  if (now.getFullYear() === 2026) currentMonthCol = now.getMonth();
+  else if (now.getFullYear() === 2027) currentMonthCol = 12 + now.getMonth();
+
+  var html = '<table class="gantt-table" style="min-width:1200px;">';
+  html += '<thead><tr><th class="gantt-name-col">Program</th><th>DRI</th>';
+  allMonths.forEach(function(m, i) {
+    var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
+    var yearBorder = i === 12 ? "border-left:3px solid #1a1a2e;" : "";
+    html += '<th style="min-width:42px;font-size:0.6rem;' + todayStyle + yearBorder + '">' + m.label + '</th>';
+  });
+  html += '</tr></thead><tbody>';
+
+  filteredOwners.forEach(function(owner) {
+    var ownerPrograms = owner.programs;
+
+    // Filter by type if needed
+    if (typeFilter !== "all") {
+      ownerPrograms = ownerPrograms.filter(function(p) {
+        var s26 = schedule2026[p.item] || [];
+        var s27 = schedule2027[p.item] || [];
+        return s26.indexOf(typeFilter) > -1 || s27.indexOf(typeFilter) > -1;
+      });
+    }
+
+    if (ownerPrograms.length === 0) return;
+
+    // Owner header
+    html += '<tr class="gantt-owner-row"><td class="gantt-name-cell" colspan="2">' + owner.name + ' (' + ownerPrograms.length + ')</td>';
+    allMonths.forEach(function(m, i) {
+      var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
+      var yearBorder = i === 12 ? "border-left:3px solid #1a1a2e;" : "";
+      html += '<td style="' + todayStyle + yearBorder + '"></td>';
+    });
+    html += '</tr>';
+
+    ownerPrograms.forEach(function(p) {
+      var s26 = schedule2026[p.item] || Array(12).fill("");
+      var s27 = schedule2027[p.item] || Array(12).fill("");
+      var combined = s26.concat(s27);
+
+      html += '<tr><td class="gantt-name-cell">' + p.item + '</td>';
+      html += '<td class="gantt-dri">' + owner.name + '</td>';
+
+      combined.forEach(function(t, i) {
+        var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
+        var yearBorder = i === 12 ? "border-left:3px solid #1a1a2e;" : "";
+
+        html += '<td style="padding:2px 1px;' + todayStyle + yearBorder + '">';
+        if (t) {
+          html += '<div class="gantt-cell gantt-cell-' + t + '" style="font-size:0.55rem;padding:2px 1px;">' + (cellLabels[t] || "") + '</div>';
+        } else {
+          html += '<div class="gantt-cell-empty" style="min-height:18px;"></div>';
+        }
+        html += '</td>';
+      });
+      html += '</tr>';
+    });
+  });
+
+  html += '</tbody></table>';
+  document.getElementById("schedGanttArea").innerHTML = html;
+}
+
+initSchedFilters();
+document.getElementById("schedOwnerFilter").addEventListener("change", renderSchedule);
+document.getElementById("schedTypeFilter").addEventListener("change", renderSchedule);
 
 // Export/Import
 function exportData() {
