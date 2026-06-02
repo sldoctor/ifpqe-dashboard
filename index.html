@@ -1284,6 +1284,13 @@ var cellHours = {
   "rfq": 0.4
 };
 
+var ownerOverhead = {
+  "Doc": 4.0,
+  "Brijesh": 2.0,
+  "Olga": 2.0,
+  "Anish": 2.0
+};
+
 function initRAFilters() {
   var ownerSel = document.getElementById("raOwnerFilter");
   owners.forEach(function(o) {
@@ -1309,6 +1316,7 @@ function renderResourceAllocation() {
   var typeCounts = {sustaining:0,npi:0,effa:0,eom:0,prq:0,rfq:0};
   var currentMonth = new Date().getMonth();
   filteredOwners.forEach(function(owner) {
+    totalHoursMonth += (ownerOverhead[owner.name] || 2.0);
     owner.programs.forEach(function(p) {
       totalPrograms++;
       var sched = schedule[p.item];
@@ -1340,7 +1348,8 @@ function renderResourceAllocation() {
 
   filteredOwners.forEach(function(owner) {
     // Owner header row
-    var ownerHoursPerMonth = Array(12).fill(0);
+    var overhead = ownerOverhead[owner.name] || 2.0;
+    var ownerHoursPerMonth = Array(12).fill(overhead);
     owner.programs.forEach(function(p) {
       var sched = schedule[p.item];
       if (sched) {
@@ -1350,7 +1359,8 @@ function renderResourceAllocation() {
       }
     });
 
-    html += '<tr class="gantt-owner-row"><td class="gantt-name-cell" colspan="3">' + owner.name + ' (' + owner.programs.length + ' programs)</td>';
+    var overheadLabel = owner.name === "Doc" ? "2h general + 2h mgmt" : "2h general";
+    html += '<tr class="gantt-owner-row"><td class="gantt-name-cell" colspan="3">' + owner.name + ' (' + owner.programs.length + ' programs + ' + overheadLabel + ')</td>';
     months.forEach(function(m, i) {
       var h = ownerHoursPerMonth[i];
       var color = h > HOURS_ACTUAL_HIGH ? "#ef4444" : (h > HOURS_NOMINAL_DAY ? "#f59e0b" : "#22c55e");
@@ -1675,8 +1685,9 @@ function renderAnalysis() {
     ownerTotals2026[a.dri] = (ownerTotals2026[a.dri] || 0) + a.alloc;
     ownerTotals2027[a.dri] = (ownerTotals2027[a.dri] || 0) + a.alloc2027;
   });
-  var delta = total2027 - total2026;
-  var deltaColor = delta > 0 ? "#ef4444" : "#22c55e";
+  var totalCombined = total2026 + totalRma2026;
+  var delta8h = totalCombined - 8.0;
+  var deltaColor = delta8h > 0 ? "#ef4444" : "#22c55e";
 
   document.getElementById("analysisSummaryCards").innerHTML =
     '<div class="ra-summary-card"><div class="ra-val">' + filtered.length + '</div><div class="ra-lbl">Programs</div></div>' +
@@ -1684,7 +1695,7 @@ function renderAnalysis() {
     '<div class="ra-summary-card"><div class="ra-val" style="color:#7c3aed">' + total2027.toFixed(1) + 'h</div><div class="ra-lbl">2027 Field Total</div></div>' +
     '<div class="ra-summary-card"><div class="ra-val" style="color:#f59e0b">' + totalRma2026.toFixed(1) + 'h</div><div class="ra-lbl">2026 RMA Total</div></div>' +
     '<div class="ra-summary-card"><div class="ra-val" style="color:#dc2626">' + totalRma2027.toFixed(1) + 'h</div><div class="ra-lbl">2027 RMA Total</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:' + deltaColor + '">' + (delta >= 0 ? "+" : "") + delta.toFixed(1) + 'h</div><div class="ra-lbl">YoY Field Delta</div></div>';
+    '<div class="ra-summary-card"><div class="ra-val" style="color:' + deltaColor + '">' + (delta8h >= 0 ? "+" : "") + delta8h.toFixed(1) + 'h</div><div class="ra-lbl">Delta vs 8h/day</div></div>';
 
   // Line chart
   if (analysisChart) analysisChart.destroy();
