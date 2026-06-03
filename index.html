@@ -1279,10 +1279,59 @@ var cellHours = {
   "rfq": 0.4
 };
 
+var overheadData = {
+  "Doc": { "field": Array(12).fill(2.0), "mgmt": Array(12).fill(2.0) },
+  "Brijesh": { "field": Array(12).fill(2.0) },
+  "Olga": { "field": Array(12).fill(1.5), "material": Array(12).fill(2.0) },
+  "Anish": { "field": Array(12).fill(2.0) }
+};
+
+function loadOverheadData() {
+  try {
+    var saved = localStorage.getItem("ifpqe_overhead_data");
+    if (saved) {
+      var data = JSON.parse(saved);
+      Object.keys(data).forEach(function(owner) {
+        if (overheadData[owner]) {
+          Object.keys(data[owner]).forEach(function(cat) {
+            if (overheadData[owner][cat]) overheadData[owner][cat] = data[owner][cat];
+            else overheadData[owner][cat] = data[owner][cat];
+          });
+        }
+      });
+    }
+  } catch(e) {}
+}
+loadOverheadData();
+
+function saveOverheadData() {
+  try { localStorage.setItem("ifpqe_overhead_data", JSON.stringify(overheadData)); } catch(e) {}
+}
+
+function getOwnerOverhead(ownerName, monthIdx) {
+  var total = 0;
+  var cats = overheadData[ownerName];
+  if (cats) {
+    Object.keys(cats).forEach(function(cat) { total += cats[cat][monthIdx] || 0; });
+  }
+  return total;
+}
+
+function cycleOverhead(ownerName, category, monthIdx) {
+  var cats = overheadData[ownerName];
+  if (!cats || !cats[category]) return;
+  var current = cats[category][monthIdx];
+  var next = current + 0.5;
+  if (next > 8) next = 0;
+  cats[category][monthIdx] = next;
+  saveOverheadData();
+  renderResourceAllocation();
+}
+
 var ownerOverhead = {
   "Doc": 4.0,
   "Brijesh": 2.0,
-  "Olga": 2.0,
+  "Olga": 3.5,
   "Anish": 2.0
 };
 
@@ -1311,7 +1360,7 @@ function renderResourceAllocation() {
   var typeCounts = {sustaining:0,npi:0,effa:0,eom:0,prq:0,rfq:0};
   var currentMonth = new Date().getMonth();
   filteredOwners.forEach(function(owner) {
-    totalHoursMonth += (ownerOverhead[owner.name] || 2.0);
+    totalHoursMonth += getOwnerOverhead(owner.name, currentMonth);
     owner.programs.forEach(function(p) {
       totalPrograms++;
       var sched = schedule[p.item];
@@ -1328,12 +1377,12 @@ function renderResourceAllocation() {
 
   document.getElementById("raSummaryCards").innerHTML =
     '<div class="ra-summary-card"><div class="ra-val">' + totalPrograms + '</div><div class="ra-lbl">Total Programs</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#16a34a">' + typeCounts.sustaining + '</div><div class="ra-lbl">Sustaining (this month)</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#2563eb">' + typeCounts.npi + '</div><div class="ra-lbl">NPI (this month)</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#7c3aed">' + typeCounts.effa + '</div><div class="ra-lbl">EFFA (this month)</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#dc2626">' + typeCounts.eom + '</div><div class="ra-lbl">EOM/Safety (this month)</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#16a34a">' + typeCounts.sustaining + '</div><div class="ra-lbl">Sustaining Program (this month)</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#2563eb">' + typeCounts.npi + '</div><div class="ra-lbl">NPI Program (this month)</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#7c3aed">' + typeCounts.effa + '</div><div class="ra-lbl">EFFA Program (this month)</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#dc2626">' + typeCounts.eom + '</div><div class="ra-lbl">EOX Program (this month)</div></div>' +
     '<div class="ra-summary-card"><div class="ra-val" style="color:' + (utilNominal > 100 ? "#ef4444" : "#22c55e") + '">' + utilNominal + '%</div><div class="ra-lbl">Utilization vs 8h/day</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#1a1a2e">' + totalHoursMonth.toFixed(1) + 'h</div><div class="ra-lbl">Total hrs/day (this month)</div></div>';
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#1a1a2e">' + totalHoursMonth.toFixed(1) + 'h</div><div class="ra-lbl">FPQE Team Total hrs/day (this month)</div></div>';
 
   // Build Gantt table
   var html = '<table class="gantt-table">';
@@ -1343,8 +1392,7 @@ function renderResourceAllocation() {
 
   filteredOwners.forEach(function(owner) {
     // Owner header row
-    var overhead = ownerOverhead[owner.name] || 2.0;
-    var ownerHoursPerMonth = Array(12).fill(overhead);
+    var ownerHoursPerMonth = months.map(function(m, i) { return getOwnerOverhead(owner.name, i); });
     owner.programs.forEach(function(p) {
       var sched = schedule[p.item];
       if (sched) {
@@ -1354,7 +1402,7 @@ function renderResourceAllocation() {
       }
     });
 
-    var overheadLabel = owner.name === "Doc" ? "2h field + 2h mgmt" : "2h field";
+    var overheadLabel = owner.name === "Doc" ? "2h field + 2h mgmt" : (owner.name === "Olga" ? "2h field + 1.5h material" : "2h field");
     html += '<tr class="gantt-owner-row"><td class="gantt-name-cell" colspan="3">' + owner.name + ' (' + owner.programs.length + ' programs + ' + overheadLabel + ')</td>';
     months.forEach(function(m, i) {
       var h = ownerHoursPerMonth[i];
@@ -1364,11 +1412,13 @@ function renderResourceAllocation() {
     html += '</tr>';
 
     // Overhead rows
+    var oName = owner.name.replace(/'/g, "\\'");
     html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">All program - field</td>';
     html += '<td class="gantt-cm">—</td>';
     html += '<td class="gantt-dri">' + owner.name + '</td>';
-    months.forEach(function() {
-      html += '<td><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">2.0h</div></td>';
+    months.forEach(function(m, mi) {
+      var val = (overheadData[owner.name] && overheadData[owner.name].field) ? overheadData[owner.name].field[mi] : 2.0;
+      html += '<td class="gantt-clickable" onclick="cycleOverhead(\'' + oName + '\',\'field\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">' + val.toFixed(1) + 'h</div></td>';
     });
     html += '</tr>';
 
@@ -1376,8 +1426,20 @@ function renderResourceAllocation() {
       html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">People Management</td>';
       html += '<td class="gantt-cm">—</td>';
       html += '<td class="gantt-dri">Doc</td>';
-      months.forEach(function() {
-        html += '<td><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">2.0h</div></td>';
+      months.forEach(function(m, mi) {
+        var val = (overheadData["Doc"] && overheadData["Doc"].mgmt) ? overheadData["Doc"].mgmt[mi] : 2.0;
+        html += '<td class="gantt-clickable" onclick="cycleOverhead(\'Doc\',\'mgmt\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">' + val.toFixed(1) + 'h</div></td>';
+      });
+      html += '</tr>';
+    }
+
+    if (owner.name === "Olga") {
+      html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">Special material analysis</td>';
+      html += '<td class="gantt-cm">—</td>';
+      html += '<td class="gantt-dri">Olga</td>';
+      months.forEach(function(m, mi) {
+        var val = (overheadData["Olga"] && overheadData["Olga"].material) ? overheadData["Olga"].material[mi] : 1.5;
+        html += '<td class="gantt-clickable" onclick="cycleOverhead(\'Olga\',\'material\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">' + val.toFixed(1) + 'h</div></td>';
       });
       html += '</tr>';
     }
@@ -1404,6 +1466,29 @@ function renderResourceAllocation() {
       html += '</tr>';
     });
   });
+
+  // Total hours/day footer row
+  var totalPerMonth = Array(12).fill(0);
+  filteredOwners.forEach(function(owner) {
+    months.forEach(function(m, i) {
+      totalPerMonth[i] += getOwnerOverhead(owner.name, i);
+    });
+    owner.programs.forEach(function(p) {
+      var sched = schedule[p.item];
+      if (sched) {
+        sched.forEach(function(t, i) {
+          if (t) totalPerMonth[i] += (cellHours[t] || 0);
+        });
+      }
+    });
+  });
+  html += '<tr style="border-top:3px solid #1a1a2e;background:#f0f2f5;"><td class="gantt-name-cell" style="font-weight:700;color:#1a1a2e;">Total hours / day</td><td class="gantt-cm"></td><td class="gantt-dri"></td>';
+  months.forEach(function(m, i) {
+    var h = totalPerMonth[i];
+    var color = h > (filteredOwners.length * HOURS_NOMINAL_DAY) ? "#ef4444" : "#1a1a2e";
+    html += '<td style="font-size:0.72rem;font-weight:700;color:' + color + '">' + h.toFixed(1) + 'h</td>';
+  });
+  html += '</tr>';
 
   html += '</tbody></table>';
   document.getElementById("raGanttArea").innerHTML = html;
@@ -1543,6 +1628,17 @@ function renderSchedule() {
       html += '</tr>';
     }
 
+    if (owner.name === "Olga") {
+      html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">Special material analysis</td>';
+      html += '<td class="gantt-dri" style="color:#6b7280;">Olga</td>';
+      allMonths.forEach(function(m, i) {
+        var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
+        var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
+        html += '<td style="padding:2px 1px;' + todayStyle + yearBorder + '"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">1.5h</div></td>';
+      });
+      html += '</tr>';
+    }
+
     ownerPrograms.forEach(function(p) {
       var s26 = schedule2026[p.item] || Array(12).fill("");
       var s27 = schedule2027[p.item] || Array(12).fill("");
@@ -1633,6 +1729,11 @@ function importData(event) {
 
 // Analysis Tab
 var allocations = [
+  {name:"All program - field",cm:"—",fieldStatus:"N/A",dri:"Doc",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
+  {name:"People Management",cm:"—",fieldStatus:"N/A",dri:"Doc",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
+  {name:"All program - field",cm:"—",fieldStatus:"N/A",dri:"Brijesh",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
+  {name:"All program - field",cm:"—",fieldStatus:"N/A",dri:"Olga",alloc:1.5,rmaDri:"N/A",rmaAlloc:0,alloc2027:1.5,rmaAlloc2027:0},
+  {name:"All program - field",cm:"—",fieldStatus:"N/A",dri:"Anish",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
   {name:"VEGA/GEN1",cm:"FLEX",fieldStatus:"EOM/EOS",dri:"Brijesh",alloc:0.4,rmaDri:"N/A",rmaAlloc:0,alloc2027:0.16,rmaAlloc2027:0},
   {name:"GEN2 (PICCINO/UNICO)",cm:"CNT",fieldStatus:"EOM",dri:"Brijesh",alloc:0.8,rmaDri:"Mai",rmaAlloc:0,alloc2027:0.4,rmaAlloc2027:0},
   {name:"24W PSU",cm:"LUX",fieldStatus:"EOM",dri:"Doc",alloc:0.4,rmaDri:"Mai",rmaAlloc:0,alloc2027:0.16,rmaAlloc2027:0},
@@ -1642,6 +1743,7 @@ var allocations = [
   {name:"EDEN",cm:"CNT",fieldStatus:"EOM",dri:"Brijesh",alloc:0.4,rmaDri:"Mai",rmaAlloc:0.8,alloc2027:0.4,rmaAlloc2027:0},
   {name:"15W PSU1",cm:"Speedtech",fieldStatus:"Retail/ISP/CI/RMA",dri:"Doc",alloc:0.8,rmaDri:"SQE",rmaAlloc:0,alloc2027:0.8,rmaAlloc2027:0},
   {name:"TRIESTE",cm:"CNT",fieldStatus:"Retail/ISP/CI/RMA",dri:"Brijesh",alloc:0.8,rmaDri:"Mai",rmaAlloc:0.8,alloc2027:0.8,rmaAlloc2027:0.8},
+  {name:"Special material analysis",cm:"—",fieldStatus:"N/A",dri:"Olga",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
   {name:"15W PSU2",cm:"PHIHONG",fieldStatus:"Retail/ISP/CI/RMA",dri:"Olga",alloc:0.8,rmaDri:"SQE",rmaAlloc:0,alloc2027:0.8,rmaAlloc2027:0},
   {name:"27W PSU",cm:"Foxlink/Phihong",fieldStatus:"Retail/ISP/CI/RMA",dri:"Brijesh",alloc:0.8,rmaDri:"SQE",rmaAlloc:0,alloc2027:0.8,rmaAlloc2027:0},
   {name:"FIREFLY",cm:"LUX",fieldStatus:"Retail/ISP/CI/RMA",dri:"Doc",alloc:0.8,rmaDri:"Mai",rmaAlloc:0.8,alloc2027:0.4,rmaAlloc2027:0.8},
@@ -1718,17 +1820,18 @@ function renderAnalysis() {
     ownerTotals2026[a.dri] = (ownerTotals2026[a.dri] || 0) + a.alloc;
     ownerTotals2027[a.dri] = (ownerTotals2027[a.dri] || 0) + a.alloc2027;
   });
-  var totalCombined = total2026 + totalRma2026;
-  var delta8h = totalCombined - 8.0;
+  var numOwners = ownerFilter !== "all" ? 1 : 4;
+  var target = numOwners * 8.0;
+  var delta8h = total2026 - target;
   var deltaColor = delta8h > 0 ? "#ef4444" : "#22c55e";
 
   document.getElementById("analysisSummaryCards").innerHTML =
-    '<div class="ra-summary-card"><div class="ra-val">' + filtered.length + '</div><div class="ra-lbl">Programs</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#2563eb">' + total2026.toFixed(1) + 'h</div><div class="ra-lbl">2026 Field Total</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#7c3aed">' + total2027.toFixed(1) + 'h</div><div class="ra-lbl">2027 Field Total</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#f59e0b">' + totalRma2026.toFixed(1) + 'h</div><div class="ra-lbl">2026 RMA Total</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:#dc2626">' + totalRma2027.toFixed(1) + 'h</div><div class="ra-lbl">2027 RMA Total</div></div>' +
-    '<div class="ra-summary-card"><div class="ra-val" style="color:' + deltaColor + '">' + (delta8h >= 0 ? "+" : "") + delta8h.toFixed(1) + 'h</div><div class="ra-lbl">Delta vs 8h/day</div></div>';
+    '<div class="ra-summary-card"><div class="ra-val">' + filtered.length + '</div><div class="ra-lbl">Programs + Projects/Others</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#2563eb">' + total2026.toFixed(1) + 'h</div><div class="ra-lbl">2026 Field PQE Team Hours/Day Total</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#7c3aed">' + total2027.toFixed(1) + 'h</div><div class="ra-lbl">2027 Field PQE Team Hours/Day Total</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#f59e0b">' + totalRma2026.toFixed(1) + 'h</div><div class="ra-lbl">2026 RMA PQE Total Hrs/Day</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:#dc2626">' + totalRma2027.toFixed(1) + 'h</div><div class="ra-lbl">2027 RMA PQE Total Hrs/Day</div></div>' +
+    '<div class="ra-summary-card"><div class="ra-val" style="color:' + deltaColor + '">' + (delta8h >= 0 ? "+" : "") + delta8h.toFixed(1) + 'h</div><div class="ra-lbl">Delta vs ' + target.toFixed(0) + 'h/day (' + numOwners + 'x8h)</div></div>';
 
   // Line chart
   if (analysisChart) analysisChart.destroy();
