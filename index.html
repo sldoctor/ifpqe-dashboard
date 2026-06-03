@@ -372,8 +372,6 @@ var programs = [
 {name:"Luckin - Hotel 8 PoE",cm:"N/A",fieldStatus:"RFQ",status:"RFQ",rmaDri:"TBH"},
 {name:"Deja-Vu",cm:"LUXSHARE",fieldStatus:"NPI",status:"DVT",rmaDri:"TBH"},
 {name:"Ritual",cm:"N/A",fieldStatus:"RFQ",status:"RFQ",rmaDri:"TBH"},
-{name:"Telescope",cm:"N/A",fieldStatus:"RFQ",status:"RFQ",rmaDri:"TBH"},
-{name:"ONT media converter (Dunkin) and PoE companion (Donut)",cm:"N/A",fieldStatus:"RFQ",status:"RFQ",rmaDri:"TBH"},
 {name:"PoE Injectors (4)",cm:"N/A",fieldStatus:"RFQ",status:"RFQ",rmaDri:"TBH"},
 {name:"Espresso",cm:"N/A",fieldStatus:"RFQ",status:"RFQ",rmaDri:"TBH"},
 {name:"Tabby *1,2,3",cm:"N/A",fieldStatus:"RFQ",status:"RFQ",rmaDri:"TBH"},
@@ -382,53 +380,58 @@ var programs = [
 ];
 
 var deliverables = [
-{phase:"PRFAQ",id:"IFPQE-01-01",name:"PRFAQ Doc Review",scope:"Architecture / Spec",criteria:"Analyze product concept and CX promise; flag field quality risks before design lock."},
-{phase:"PRFAQ",id:"IFPQE-01-02",name:"Historical Baseline",scope:"Lessons Learned DB",criteria:"Review legacy failure modes; establish cross-project quality baseline targets."},
-{phase:"PROTO",id:"IFPQE-02-01",name:"Lessons Learned Init",scope:"Lessons Learned DB",criteria:"Populate master database with historical Wi-Fi, mesh network, and hardware issues."},
-{phase:"PROTO",id:"IFPQE-02-02",name:"Early PLM BOM Analysis",scope:"Arena / Agile",criteria:"Review early bill-of-materials layers; flag risk-prone components."},
-{phase:"EVT",id:"IFPQE-03-01",name:"Beta Return Setup",scope:"Zendesk / NetSuite",criteria:"Deploy dedicated tracking protocols to isolate and ingest pre-release field failures."},
-{phase:"EVT",id:"IFPQE-03-02",name:"Beta FA Execution",scope:"Lab Triage / Jira",criteria:"Run root-cause investigations on early customer or employee beta hardware units."},
-{phase:"EVT",id:"IFPQE-03-03",name:"Hotspot Identification",scope:"Looker Tracking",criteria:"Triage early testing anomalies; isolate systemic electrical or RF validation issues."},
-{phase:"EVT",id:"IFPQE-03-04",name:"NPI Boundary Control",scope:"Organization Filter",criteria:"Restrict engineering failure analysis strictly to Beta returns or formal escalations."},
-{phase:"DVT",id:"IFPQE-04-01",name:"FGA Strategy Draft",scope:"Factory Audit Gate",criteria:"Define out-of-box audit parameters, cosmetic limits, and sampling metrics."},
-{phase:"DVT",id:"IFPQE-04-02",name:"Beta RMA Trend Analysis",scope:"Zendesk / NetSuite",criteria:"Mine active beta test data; catch performance drifts prior to volume ramp."},
-{phase:"DVT",id:"IFPQE-04-03",name:"Hotspot FA Review",scope:"Technical Triage",criteria:"Transition validated beta anomalies into formal engineering fixes."},
-{phase:"DVT",id:"IFPQE-04-04",name:"Test Spec Alignment",scope:"Compliance Systems",criteria:"Cross-verify testing parameters against international standards (IEC, UL, ISO, IPC)."},
-{phase:"PVT",id:"IFPQE-05-01",name:"FGA Implementation",scope:"Factory Audit Gate",criteria:"Launch on-site white-glove audits on packed production lots at the offshore factory."},
-{phase:"PVT",id:"IFPQE-05-02",name:"Offshore System Audit",scope:"CM / JDM / ODM Lines",criteria:"Travel to APAC sites; verify line process compliance and manufacturing controls."},
-{phase:"PVT",id:"IFPQE-05-03",name:"Process Control Audit",scope:"IQC / WIP / FG Check",criteria:"Audit and verify checkpoints for incoming materials, work-in-process, and finished goods."},
-{phase:"PVT",id:"IFPQE-05-04",name:"RMA Line Blueprinting",scope:"3PL Infrastructure",criteria:"Draft the test, triage, and inspection processes for downstream return centers."},
-{phase:"OK2RAMP",id:"IFPQE-06-01",name:"No-Fly List Setup",scope:"Factory MES",criteria:"Configure and deploy serial-number blocking protocols inside the factory software."},
-{phase:"OK2RAMP",id:"IFPQE-06-02",name:"EFFA Prep Workflow",scope:"Intl. / Dom. Trackers",criteria:"Finalize international and domestic tracking templates for the market launch window."},
-{phase:"OK2RAMP",id:"IFPQE-06-03",name:"Incident Management Prep",scope:"Recall Playbook",criteria:"Prepare localized containment playbooks in case of early factory design escapes."},
-{phase:"OK2FWD",id:"IFPQE-07-01",name:"FW Release Doc Review",scope:"Software / Firmware",criteria:"Verify firmware stability, mesh performance, and bug-fix verification logs."},
-{phase:"OK2FWD",id:"IFPQE-07-02",name:"AQL Verification",scope:"Shipping Logs",criteria:"Confirm that initial production pallet lots meet Acceptable Quality Limit standards."},
-{phase:"OK2SHIP",id:"IFPQE-08-01",name:"Product Release Sign-off",scope:"Gate Exit Clearance",criteria:"Audit gate-exit documentation to authorize final commercial shipping clearance."},
-{phase:"OK2SHIP",id:"IFPQE-08-02",name:"EFFA Pipeline Activation",scope:"Data Ingestion Hub",criteria:"Initialize real-time ingestion loops across NetSuite, Zendesk, Looker, and Jira."},
-{phase:"OK2SHIP",id:"IFPQE-08-03",name:"RMA Return Line Go-Live",scope:"3PL Infrastructure",criteria:"Open active triage and tear-down operations at domestic and international centers."},
-{phase:"MP",id:"IFPQE-09-01",name:"Domestic EFFA Track",scope:"EFFA / Triage Loops",criteria:"Triage domestic customer returns, execute factory FA requests, and log lessons learned."},
-{phase:"MP",id:"IFPQE-09-02",name:"International EFFA Track",scope:"EFFA / Triage Loops",criteria:"Coordinate international field return data mining and verify localized regulatory fixes."},
-{phase:"MP",id:"IFPQE-09-03",name:"Ongoing Field Triage",scope:"Data Ingestion Hub",criteria:"Run continuous data mining across Looker and NetSuite to catch degradation trends."},
-{phase:"MP",id:"IFPQE-09-04",name:"Factory FA Execution",scope:"CM / JDM / ODM Tasks",criteria:"Convert verified field trends into active root-cause tickets for manufacturing partners."},
-{phase:"MP",id:"IFPQE-09-05",name:"Quality Alert & SCAR",scope:"Escalation Management",criteria:"Issue high-visibility warnings and Supplier Corrective Action Requests for critical bugs."},
-{phase:"MP",id:"IFPQE-09-06",name:"PRQ Management",scope:"Multi-Tier Qual.",criteria:"Direct L1-L4 qualifications for mid-lifecycle component or manufacturing line swaps."},
-{phase:"MP",id:"IFPQE-09-07",name:"ORT Lab Asset Audit",scope:"Equipment / Testing",criteria:"Manage domestic US ongoing reliability testing infrastructure and equipment assets."},
-{phase:"EOS",id:"IFPQE-10-01",name:"Sales Pipeline Freeze",scope:"Inventory Control",criteria:"Stop new sales inventory pipelines and coordinate final warehouse balance checks."},
-{phase:"EOS",id:"IFPQE-10-02",name:"Field Quarantine Setup",scope:"Channel Quarantines",criteria:"Set up regional holding areas for unsold stock or customer field returns."},
-{phase:"EOS",id:"IFPQE-10-03",name:"Legacy RMA Baseline",scope:"Financial Modeling",criteria:"Re-calculate warranty forecasting models based on the final fixed install-base size."},
-{phase:"EOM",id:"IFPQE-11-01",name:"Final Lot FGA",scope:"Factory Audit Gate",criteria:"Perform tail-end out-of-box audits to verify line tear-downs did not introduce defects."},
-{phase:"EOM",id:"IFPQE-11-02",name:"PLM Change Freeze",scope:"Arena / Agile",criteria:"Review the PLM system to lock assembly drawings and restrict unapproved BOM changes."},
-{phase:"EOR",id:"IFPQE-12-01",name:"Triage Line Handoff",scope:"3PL Infrastructure",criteria:"Dismantle active hardware repair loops and test equipment benches at return centers."},
-{phase:"EOR",id:"IFPQE-12-02",name:"Tooling Asset Audit",scope:"Equipment / Testing",criteria:"Inventory, return, or reallocate company-owned laboratory and triage gear."},
-{phase:"EOW",id:"IFPQE-13-01",name:"Warranty Closeout",scope:"Legal / Support Contracts",criteria:"Reconcile remaining service agreements and finalize outstanding customer support claims."},
-{phase:"EOW",id:"IFPQE-13-02",name:"Final PLM Component Review",scope:"Arena / Agile",criteria:"Update active component lifecycle statuses inside Arena/Agile PLM systems."},
-{phase:"EOL",id:"IFPQE-14-01",name:"Final PLM Sign-off",scope:"Arena / Agile",criteria:"Archive all engineering change records related to the product architecture."},
-{phase:"EOL",id:"IFPQE-14-02",name:"Secure Scrap Validation",scope:"Asset Destruction",criteria:"Oversee the physical destruction and scrap processing of remaining return stock."},
-{phase:"EOL",id:"IFPQE-14-03",name:"Lessons Learned Archival",scope:"Lessons Learned DB",criteria:"Finalize and lock the project's historical data entries to inform future NPI teams."}
+{phase:"PRFAQ",id:"FPQE-01-01",name:"PRFAQ Doc Review",scope:"Architecture / Spec",criteria:"Review of product concept and application; flag field quality risks before design lock."},
+{phase:"PRFAQ",id:"FPQE-01-02",name:"Historical Baseline",scope:"Lessons Learned",criteria:"Review legacy failure modes; establish cross-project quality baseline targets. Feedback to Product if there's any concern."},
+{phase:"PROTO",id:"FPQE-02-01",name:"Lessons Learned Init",scope:"Lessons Learned",criteria:"Populate master database with historical Wi-Fi, mesh network, and hardware issues."},
+{phase:"EVT",id:"FPQE-03-01",name:"Beta Return Setup",scope:"Zendesk / NetSuite",criteria:"Make sure Beta owners dedicated tracking protocols to isolate and return HW field failures for failure analysis."},
+{phase:"EVT",id:"FPQE-03-02",name:"Beta FA Execution",scope:"Lab Triage / Jira",criteria:"Run root-cause investigations on early tester or employee beta hardware units."},
+{phase:"EVT",id:"FPQE-03-03",name:"Hotspot One-Off support",scope:"FA review/support",criteria:"Triage early testing anomalies; isolate systemic electrical or RF validation issues."},
+{phase:"EVT",id:"FPQE-03-04",name:"NPI Boundary Control",scope:"Organization Filter",criteria:"Restrict engineering failure analysis strictly to Beta returns or formal escalations."},
+{phase:"EVT",id:"FPQE-04-01a",name:"FGA planning",scope:"FGA",criteria:"Define out-of-box audit parameters, cosmetic limits, and sampling metrics."},
+{phase:"EVT",id:"FPQE-04-01b",name:"FGA inspection",scope:"FGA",criteria:"Packaging, artwork, device and accessories audit."},
+{phase:"DVT",id:"FPQE-04-02",name:"Beta RMA Trend Analysis",scope:"Zendesk / NetSuite",criteria:"Participate on beta test data review; catch performance drifts prior to volume ramp."},
+{phase:"DVT",id:"FPQE-04-03",name:"Hotspot FA support (when needed)",scope:"Technical Triage",criteria:"Review of FA done by Engineering and Manufacturing."},
+{phase:"PVT",id:"FPQE-05-01",name:"FGA Implementation",scope:"Factory Audit Gate",criteria:"Launch on-site white-glove audits on packed production lots at the offshore factory."},
+{phase:"PVT",id:"FPQE-05-02",name:"Offshore System Audit",scope:"CM / JDM / ODM Lines",criteria:"Travel to APAC sites; verify line process compliance and manufacturing controls."},
+{phase:"PVT",id:"FPQE-05-03",name:"Process Control Audit",scope:"IQC / WIP / FG Check",criteria:"Audit and verify checkpoints for incoming materials, work-in-process, and finished goods."},
+{phase:"PVT",id:"FPQE-05-04",name:"RMA Line Bringup",scope:"CM and/or 3PL Infrastructure",criteria:"Draft the test, triage, and inspection processes for downstream return centers."},
+{phase:"OK2RAMP",id:"FPQE-06-01",name:"No-Fly List Setup",scope:"Factory MES",criteria:"Configure and deploy serial-number blocking protocols inside the factory software."},
+{phase:"OK2RAMP",id:"FPQE-06-02",name:"EFFA Prep Workflow",scope:"Intl. / Dom. Trackers",criteria:"Finalize international and domestic tracking templates for the market launch window."},
+{phase:"OK2RAMP",id:"FPQE-06-03",name:"Incident Management Prep",scope:"Recall Playbook",criteria:"Prepare localized containment playbooks in case of early factory design escapes."},
+{phase:"OK2FWD",id:"FPQE-07-01",name:"FW Release Doc Review",scope:"Software / Firmware",criteria:"Review firmware stability, mesh performance, and bug-fix verification logs."},
+{phase:"OK2FWD",id:"FPQE-07-02",name:"AQL Verification",scope:"Shipping Logs",criteria:"Review with Factory or Packaging team that initial production pallet lots meet Acceptable Quality Limit standards."},
+{phase:"OK2SHIP",id:"FPQE-08-01",name:"Product Release Sign-off",scope:"FGA",criteria:"Review Quality metrics in OK2SHIP report."},
+{phase:"OK2SHIP",id:"FPQE-08-02",name:"EFFA Pipeline Activation",scope:"Data Ingestion Hub",criteria:"Initialize real-time ingestion loops across NetSuite, Zendesk, Looker, and Jira."},
+{phase:"OK2SHIP",id:"FPQE-08-03",name:"RMA Return Line Go-Live",scope:"3PL Infrastructure",criteria:"Open active triage and tear-down operations at domestic and international centers."},
+{phase:"MP",id:"FPQE-09-01",name:"Domestic EFFA Track",scope:"EFFA / Triage Loops",criteria:"Triage domestic customer returns, execute factory FA requests, and log lessons learned."},
+{phase:"MP",id:"FPQE-09-02",name:"International EFFA Track",scope:"EFFA / Triage Loops",criteria:"Coordinate international field return data mining and verify localized regulatory fixes."},
+{phase:"MP",id:"FPQE-09-03",name:"Ongoing Field Triage",scope:"Data Ingestion Hub",criteria:"Run continuous data mining across Looker and NetSuite to catch degradation trends."},
+{phase:"MP",id:"FPQE-09-04",name:"Factory FA Execution",scope:"CM / JDM / ODM Tasks",criteria:"Convert verified field trends into active root-cause tickets for manufacturing partners."},
+{phase:"MP",id:"FPQE-09-05",name:"Quality Alert & SCAR",scope:"Escalation Management",criteria:"Issue high-visibility warnings and Supplier Corrective Action Requests for critical bugs."},
+{phase:"MP",id:"FPQE-09-06",name:"PRQ Management",scope:"Multi-Tier Qual.",criteria:"Direct L1-L4 qualifications for mid-lifecycle component or manufacturing line swaps."},
+{phase:"MP",id:"FPQE-09-07",name:"ORT Lab Inventory",scope:"ORT Sample",criteria:"Manage US ongoing reliability testing samples from factory."},
+{phase:"MP",id:"FPQE-09-08",name:"Safety RMA review and triage",scope:"Safety / Triage Loops",criteria:"Triage customer returns related to thermal damage, execute factory FA requests, and log lessons learned."},
+{phase:"EOS",id:"FPQE-10-01",name:"Sales Pipeline Freeze",scope:"Inventory Control",criteria:"Stop new sales inventory pipelines and coordinate final warehouse balance checks."},
+{phase:"EOS",id:"FPQE-10-02",name:"Field Quarantine Setup",scope:"Channel Quarantines",criteria:"Set up regional holding areas for unsold stock or customer field returns."},
+{phase:"EOS",id:"FPQE-10-03",name:"Legacy RMA Baseline",scope:"Financial Modeling",criteria:"Re-calculate warranty forecasting models based on the final fixed install-base size."},
+{phase:"EOM",id:"FPQE-11-01",name:"Final Lot FGA",scope:"Factory Audit Gate",criteria:"Perform tail-end out-of-box audits to verify line tear-downs did not introduce defects."},
+{phase:"EOM",id:"FPQE-11-02",name:"PLM Change Freeze",scope:"Arena / Agile",criteria:"Review the PLM system to lock assembly drawings and restrict unapproved BOM changes."},
+{phase:"EOR",id:"FPQE-12-01",name:"Triage Line Handoff",scope:"3PL Infrastructure",criteria:"Dismantle active hardware repair loops and test equipment benches at return centers."},
+{phase:"EOR",id:"FPQE-12-02",name:"Tooling Asset Audit",scope:"Equipment / Testing",criteria:"Inventory, return, or reallocate company-owned laboratory and triage gear."},
+{phase:"EOW",id:"FPQE-13-01",name:"Warranty Closeout",scope:"Legal / Support Contracts",criteria:"Reconcile remaining service agreements and finalize outstanding customer support claims."},
+{phase:"EOW",id:"FPQE-13-02",name:"Final PLM Component Review",scope:"Arena / Agile",criteria:"Update active component lifecycle statuses inside Arena/Agile PLM systems."},
+{phase:"EOL",id:"FPQE-14-01",name:"Final PLM Sign-off",scope:"Arena / Agile",criteria:"Archive all engineering change records related to the product architecture."},
+{phase:"EOL",id:"FPQE-14-02",name:"Secure Scrap Validation",scope:"Asset Destruction",criteria:"Oversee the physical destruction and scrap processing of remaining return stock."},
+{phase:"EOL",id:"FPQE-14-03",name:"Lessons Learned Archival",scope:"Lessons Learned DB",criteria:"Finalize and lock the project's historical data entries to inform future NPI teams."},
+{phase:"GENERAL",id:"FPQE-15-01",name:"Cross program analysis",scope:"Failure Analysis support",criteria:"Oversee the other programs and provide advice or review that are not owned by DRI but was an expertise."},
+{phase:"GENERAL",id:"FPQE-15-02",name:"Tools Upgrade",scope:"Data Analysis tools",criteria:"Improved current tools/system or mechanism under field pqe databases."},
+{phase:"GENERAL",id:"FPQE-15-03",name:"Team Goals/Project",scope:"Team project and management",criteria:"Complete the project assigned."},
+{phase:"MGMT",id:"FPQE-16-01",name:"Team Performance Review",scope:"Team Performance Review/Project review",criteria:"Review and rate performance."},
+{phase:"MGMT",id:"FPQE-16-02",name:"Hiring, Training and others",scope:"Management of HC",criteria:"Hire and develop the best under deliverables."}
 ];
 
-var phaseOrder = ["RFQ","PRFAQ","PROTO","EVT","DVT","PVT","OK2RAMP","OK2FWD","OK2SHIP","MP","EOS","EOM","EOR","EOW","EOL"];
-var phaseColors = {"RFQ":"#0369a1","PRFAQ":"#6366f1","PROTO":"#8b5cf6","EVT":"#a855f7","DVT":"#d946ef","PVT":"#ec4899","OK2RAMP":"#f43f5e","OK2FWD":"#f97316","OK2SHIP":"#eab308","MP":"#22c55e","EOS":"#14b8a6","EOM":"#06b6d4","EOR":"#3b82f6","EOW":"#6366f1","EOL":"#78716c"};
+var phaseOrder = ["RFQ","PRFAQ","PROTO","EVT","DVT","PVT","OK2RAMP","OK2FWD","OK2SHIP","MP","EOS","EOM","EOR","EOW","EOL","GENERAL","MGMT"];
+var phaseColors = {"RFQ":"#0369a1","PRFAQ":"#6366f1","PROTO":"#8b5cf6","EVT":"#a855f7","DVT":"#d946ef","PVT":"#ec4899","OK2RAMP":"#f43f5e","OK2FWD":"#f97316","OK2SHIP":"#eab308","MP":"#22c55e","EOS":"#14b8a6","EOM":"#06b6d4","EOR":"#3b82f6","EOW":"#6366f1","EOL":"#78716c","GENERAL":"#475569","MGMT":"#334155"};
 
 function getPhaseIndex(status) {
   return phaseOrder.indexOf(status);
@@ -650,7 +653,6 @@ var owners = [
       {item:"Moorea",type:"NPI 2027-2028",role:"DRI"},
       {item:"Dune",type:"NPI 2027-2028",role:"DRI"},
       {item:"Luckin - Hotel 8 PoE",type:"NPI 2027-2028",role:"DRI"},
-      {item:"ONT media converter (Dunkin) and PoE companion (Donut)",type:"NPI 2027-2028",role:"DRI"},
       {item:"PoE Injectors (4)",type:"NPI 2027-2028",role:"DRI"},
       {item:"Memory PRQ",type:"NPI",role:"DRI"}
     ]
@@ -681,7 +683,6 @@ var owners = [
       {item:"FIREFLY LEAF (ALC)",type:"NPI",role:"DRI"},
       {item:"Gen2 PSU",type:"NPI",role:"DRI"},
       {item:"Deja-Vu",type:"NPI",role:"DRI"},
-      {item:"Telescope",type:"NPI 2027-2028",role:"DRI"},
       {item:"Tabby *1,2,3",type:"NPI 2027-2028",role:"DRI"}
     ]
   },
@@ -1148,19 +1149,17 @@ var schedule2026 = {
   "Wormhole (48)": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa"],
   "Xenia (24)": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa"],
   "Sterescope - Pro 8": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi","npi"],
-  "Sterescope - PON": ["","","","","","rfq","rfq","rfq","rfq","rfq","npi","npi"],
+  "Sterescope - PON": ["","","","","rfq","rfq","rfq","rfq","rfq","npi","npi","npi"],
   "Bluebottle - eero Max 8": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi","npi","npi","npi","npi"],
   "Moorea": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi"],
   "Dune": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi"],
   "Luckin - Hotel 8 PoE": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi","npi","npi"],
   "Deja-Vu": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","npi"],
   "Ritual": ["","","","","","","","","","","",""],
-  "Telescope": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "ONT media converter (Dunkin) and PoE companion (Donut)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
   "PoE Injectors (4)": ["","","","","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
   "Espresso": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","npi","npi","npi"],
   "Tabby *1,2,3": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "Jitters": ["","","","","","rfq","rfq","npi","npi","npi","npi","npi"],
+  "Jitters": ["","","","","rfq","rfq","npi","npi","npi","npi","npi","npi"],
   "Memory PRQ": ["prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","prq","prq"]
 };
 
@@ -1199,15 +1198,13 @@ var schedule2027 = {
   "Wormhole (48)": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Xenia (24)": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Sterescope - Pro 8": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
-  "Sterescope - PON": ["npi","npi","npi","npi","npi","npi","npi","effa","effa","effa","effa","sustaining"],
+  "Sterescope - PON": ["npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa","effa"],
   "Bluebottle - eero Max 8": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
-  "Moorea": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa"],
-  "Dune": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa"],
+  "Moorea": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
+  "Dune": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
   "Luckin - Hotel 8 PoE": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
   "Deja-Vu": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Ritual": ["","","","","","","","","","","",""],
-  "Telescope": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "ONT media converter (Dunkin) and PoE companion (Donut)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
   "PoE Injectors (4)": ["rfq","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
   "Espresso": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa","effa"],
   "Tabby *1,2,3": ["npi","npi","npi","npi","npi","npi","npi","npi","npi","npi","effa","effa"],
@@ -1252,18 +1249,16 @@ var schedule2028 = {
   "Sterescope - Pro 8": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Sterescope - PON": ["sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Bluebottle - eero Max 8": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "Moorea": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "Dune": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Moorea": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
+  "Dune": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Luckin - Hotel 8 PoE": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Deja-Vu": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Ritual": ["","","","","","","","","","","",""],
-  "Telescope": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
-  "ONT media converter (Dunkin) and PoE companion (Donut)": ["rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq","rfq"],
   "PoE Injectors (4)": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Espresso": ["effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Tabby *1,2,3": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
   "Jitters": ["sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"],
-  "Memory PRQ": ["effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"]
+  "Memory PRQ": ["effa","effa","effa","effa","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining","sustaining"]
 };
 
 var cellLabels = {
@@ -1359,7 +1354,7 @@ function renderResourceAllocation() {
       }
     });
 
-    var overheadLabel = owner.name === "Doc" ? "2h general + 2h mgmt" : "2h general";
+    var overheadLabel = owner.name === "Doc" ? "2h field + 2h mgmt" : "2h field";
     html += '<tr class="gantt-owner-row"><td class="gantt-name-cell" colspan="3">' + owner.name + ' (' + owner.programs.length + ' programs + ' + overheadLabel + ')</td>';
     months.forEach(function(m, i) {
       var h = ownerHoursPerMonth[i];
@@ -1367,6 +1362,25 @@ function renderResourceAllocation() {
       html += '<td style="font-size:0.68rem;font-weight:700;color:' + color + '">' + h.toFixed(1) + 'h</td>';
     });
     html += '</tr>';
+
+    // Overhead rows
+    html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">All program - field</td>';
+    html += '<td class="gantt-cm">—</td>';
+    html += '<td class="gantt-dri">' + owner.name + '</td>';
+    months.forEach(function() {
+      html += '<td><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">2.0h</div></td>';
+    });
+    html += '</tr>';
+
+    if (owner.name === "Doc") {
+      html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">People Management</td>';
+      html += '<td class="gantt-cm">—</td>';
+      html += '<td class="gantt-dri">Doc</td>';
+      months.forEach(function() {
+        html += '<td><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">2.0h</div></td>';
+      });
+      html += '</tr>';
+    }
 
     owner.programs.forEach(function(p) {
       var prog = programs.find(function(pr) { return pr.name === p.item; });
@@ -1508,6 +1522,27 @@ function renderSchedule() {
     });
     html += '</tr>';
 
+    // Overhead rows
+    html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">All program - field</td>';
+    html += '<td class="gantt-dri" style="color:#6b7280;">' + owner.name + '</td>';
+    allMonths.forEach(function(m, i) {
+      var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
+      var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
+      html += '<td style="padding:2px 1px;' + todayStyle + yearBorder + '"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">2.0h</div></td>';
+    });
+    html += '</tr>';
+
+    if (owner.name === "Doc") {
+      html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">People Management</td>';
+      html += '<td class="gantt-dri" style="color:#6b7280;">Doc</td>';
+      allMonths.forEach(function(m, i) {
+        var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
+        var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
+        html += '<td style="padding:2px 1px;' + todayStyle + yearBorder + '"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">2.0h</div></td>';
+      });
+      html += '</tr>';
+    }
+
     ownerPrograms.forEach(function(p) {
       var s26 = schedule2026[p.item] || Array(12).fill("");
       var s27 = schedule2027[p.item] || Array(12).fill("");
@@ -1639,8 +1674,6 @@ var allocations = [
   {name:"Luckin - Hotel 8 PoE",cm:"N/A",fieldStatus:"RFQ",dri:"Doc",alloc:0.8,rmaDri:"TBH",rmaAlloc:0,alloc2027:0.8,rmaAlloc2027:0},
   {name:"Deja-Vu",cm:"LUXSHARE",fieldStatus:"NPI",dri:"Olga",alloc:0.8,rmaDri:"TBH",rmaAlloc:0,alloc2027:1.2,rmaAlloc2027:0},
   {name:"Ritual",cm:"N/A",fieldStatus:"N/A",dri:"Anish",alloc:0.4,rmaDri:"TBH",rmaAlloc:0,alloc2027:1.2,rmaAlloc2027:0},
-  {name:"Telescope",cm:"N/A",fieldStatus:"N/A",dri:"Olga",alloc:0.4,rmaDri:"TBH",rmaAlloc:0,alloc2027:0.8,rmaAlloc2027:0},
-  {name:"ONT media converter (Dunkin) and PoE companion (Donut)",cm:"N/A",fieldStatus:"RFQ",dri:"Doc",alloc:0.4,rmaDri:"TBH",rmaAlloc:0,alloc2027:0.8,rmaAlloc2027:0},
   {name:"PoE Injectors (4)",cm:"N/A",fieldStatus:"RFQ",dri:"Doc",alloc:0.4,rmaDri:"TBH",rmaAlloc:0,alloc2027:0.8,rmaAlloc2027:0},
   {name:"Espresso",cm:"N/A",fieldStatus:"N/A",dri:"Brijesh",alloc:0.4,rmaDri:"TBH",rmaAlloc:0,alloc2027:1.2,rmaAlloc2027:0},
   {name:"Tabby *1,2,3",cm:"N/A",fieldStatus:"N/A",dri:"Olga",alloc:0.4,rmaDri:"TBH",rmaAlloc:0,alloc2027:1.6,rmaAlloc2027:0},
