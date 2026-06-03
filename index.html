@@ -1281,9 +1281,9 @@ var cellHours = {
 
 var overheadData = {
   "Doc": { "field": Array(12).fill(2.0), "mgmt": Array(12).fill(2.0) },
-  "Brijesh": { "field": Array(12).fill(2.0) },
+  "Brijesh": { "field": Array(12).fill(2.0), "datatool": Array(12).fill(1.0) },
   "Olga": { "field": Array(12).fill(1.5), "material": Array(12).fill(2.0) },
-  "Anish": { "field": Array(12).fill(2.0) }
+  "Anish": { "field": Array(12).fill(2.0), "toolproj": Array(12).fill(1.0) }
 };
 
 function loadOverheadData() {
@@ -1326,6 +1326,7 @@ function cycleOverhead(ownerName, category, monthIdx) {
   cats[category][monthIdx] = next;
   saveOverheadData();
   renderResourceAllocation();
+  renderSchedule();
 }
 
 var ownerOverhead = {
@@ -1402,7 +1403,7 @@ function renderResourceAllocation() {
       }
     });
 
-    var overheadLabel = owner.name === "Doc" ? "2h field + 2h mgmt" : (owner.name === "Olga" ? "2h field + 1.5h material" : "2h field");
+    var overheadLabel = owner.name === "Doc" ? "2h field + 2h mgmt" : (owner.name === "Olga" ? "1.5h field + 2h material" : (owner.name === "Brijesh" ? "2h field + data tool" : (owner.name === "Anish" ? "2h field + tool proj" : "2h field")));
     html += '<tr class="gantt-owner-row"><td class="gantt-name-cell" colspan="3">' + owner.name + ' (' + owner.programs.length + ' programs + ' + overheadLabel + ')</td>';
     months.forEach(function(m, i) {
       var h = ownerHoursPerMonth[i];
@@ -1438,8 +1439,30 @@ function renderResourceAllocation() {
       html += '<td class="gantt-cm">—</td>';
       html += '<td class="gantt-dri">Olga</td>';
       months.forEach(function(m, mi) {
-        var val = (overheadData["Olga"] && overheadData["Olga"].material) ? overheadData["Olga"].material[mi] : 1.5;
+        var val = (overheadData["Olga"] && overheadData["Olga"].material) ? overheadData["Olga"].material[mi] : 2.0;
         html += '<td class="gantt-clickable" onclick="cycleOverhead(\'Olga\',\'material\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">' + val.toFixed(1) + 'h</div></td>';
+      });
+      html += '</tr>';
+    }
+
+    if (owner.name === "Brijesh") {
+      html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">Special Data tool</td>';
+      html += '<td class="gantt-cm">—</td>';
+      html += '<td class="gantt-dri">Brijesh</td>';
+      months.forEach(function(m, mi) {
+        var val = (overheadData["Brijesh"] && overheadData["Brijesh"].datatool) ? overheadData["Brijesh"].datatool[mi] : 0;
+        html += '<td class="gantt-clickable" onclick="cycleOverhead(\'Brijesh\',\'datatool\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">' + val.toFixed(1) + 'h</div></td>';
+      });
+      html += '</tr>';
+    }
+
+    if (owner.name === "Anish") {
+      html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">Special Tool proj</td>';
+      html += '<td class="gantt-cm">—</td>';
+      html += '<td class="gantt-dri">Anish</td>';
+      months.forEach(function(m, mi) {
+        var val = (overheadData["Anish"] && overheadData["Anish"].toolproj) ? overheadData["Anish"].toolproj[mi] : 0;
+        html += '<td class="gantt-clickable" onclick="cycleOverhead(\'Anish\',\'toolproj\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.6rem;">' + val.toFixed(1) + 'h</div></td>';
       });
       html += '</tr>';
     }
@@ -1608,12 +1631,15 @@ function renderSchedule() {
     html += '</tr>';
 
     // Overhead rows
+    var oNameSched = owner.name.replace(/'/g, "\\'");
     html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">All program - field</td>';
     html += '<td class="gantt-dri" style="color:#6b7280;">' + owner.name + '</td>';
     allMonths.forEach(function(m, i) {
       var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
       var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
-      html += '<td style="padding:2px 1px;' + todayStyle + yearBorder + '"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">2.0h</div></td>';
+      var mi = i % 12;
+      var val = (overheadData[owner.name] && overheadData[owner.name].field) ? overheadData[owner.name].field[mi] : 2.0;
+      html += '<td class="gantt-clickable" style="padding:2px 1px;' + todayStyle + yearBorder + '" onclick="cycleOverhead(\'' + oNameSched + '\',\'field\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">' + val.toFixed(1) + 'h</div></td>';
     });
     html += '</tr>';
 
@@ -1623,7 +1649,9 @@ function renderSchedule() {
       allMonths.forEach(function(m, i) {
         var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
         var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
-        html += '<td style="padding:2px 1px;' + todayStyle + yearBorder + '"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">2.0h</div></td>';
+        var mi = i % 12;
+        var val = (overheadData["Doc"] && overheadData["Doc"].mgmt) ? overheadData["Doc"].mgmt[mi] : 2.0;
+        html += '<td class="gantt-clickable" style="padding:2px 1px;' + todayStyle + yearBorder + '" onclick="cycleOverhead(\'Doc\',\'mgmt\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">' + val.toFixed(1) + 'h</div></td>';
       });
       html += '</tr>';
     }
@@ -1634,7 +1662,35 @@ function renderSchedule() {
       allMonths.forEach(function(m, i) {
         var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
         var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
-        html += '<td style="padding:2px 1px;' + todayStyle + yearBorder + '"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">1.5h</div></td>';
+        var mi = i % 12;
+        var val = (overheadData["Olga"] && overheadData["Olga"].material) ? overheadData["Olga"].material[mi] : 2.0;
+        html += '<td class="gantt-clickable" style="padding:2px 1px;' + todayStyle + yearBorder + '" onclick="cycleOverhead(\'Olga\',\'material\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">' + val.toFixed(1) + 'h</div></td>';
+      });
+      html += '</tr>';
+    }
+
+    if (owner.name === "Brijesh") {
+      html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">Special Data tool</td>';
+      html += '<td class="gantt-dri" style="color:#6b7280;">Brijesh</td>';
+      allMonths.forEach(function(m, i) {
+        var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
+        var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
+        var mi = i % 12;
+        var val = (overheadData["Brijesh"] && overheadData["Brijesh"].datatool) ? overheadData["Brijesh"].datatool[mi] : 0;
+        html += '<td class="gantt-clickable" style="padding:2px 1px;' + todayStyle + yearBorder + '" onclick="cycleOverhead(\'Brijesh\',\'datatool\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">' + val.toFixed(1) + 'h</div></td>';
+      });
+      html += '</tr>';
+    }
+
+    if (owner.name === "Anish") {
+      html += '<tr><td class="gantt-name-cell" style="color:#6b7280;font-style:italic;">Special Tool proj</td>';
+      html += '<td class="gantt-dri" style="color:#6b7280;">Anish</td>';
+      allMonths.forEach(function(m, i) {
+        var todayStyle = i === currentMonthCol ? "border-left:3px solid #ef4444;" : "";
+        var yearBorder = (i === 12 || i === 24) ? "border-left:3px solid #1a1a2e;" : "";
+        var mi = i % 12;
+        var val = (overheadData["Anish"] && overheadData["Anish"].toolproj) ? overheadData["Anish"].toolproj[mi] : 0;
+        html += '<td class="gantt-clickable" style="padding:2px 1px;' + todayStyle + yearBorder + '" onclick="cycleOverhead(\'Anish\',\'toolproj\',' + mi + ')" title="Click to change (0-8h)"><div class="gantt-cell" style="background:#6b7280;font-size:0.5rem;padding:2px 1px;">' + val.toFixed(1) + 'h</div></td>';
       });
       html += '</tr>';
     }
@@ -1732,8 +1788,10 @@ var allocations = [
   {name:"All program - field",cm:"—",fieldStatus:"N/A",dri:"Doc",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
   {name:"People Management",cm:"—",fieldStatus:"N/A",dri:"Doc",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
   {name:"All program - field",cm:"—",fieldStatus:"N/A",dri:"Brijesh",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
+  {name:"Special Data tool",cm:"—",fieldStatus:"N/A",dri:"Brijesh",alloc:1.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:1.0,rmaAlloc2027:0},
   {name:"All program - field",cm:"—",fieldStatus:"N/A",dri:"Olga",alloc:1.5,rmaDri:"N/A",rmaAlloc:0,alloc2027:1.5,rmaAlloc2027:0},
   {name:"All program - field",cm:"—",fieldStatus:"N/A",dri:"Anish",alloc:2.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:2.0,rmaAlloc2027:0},
+  {name:"Special Tool proj",cm:"—",fieldStatus:"N/A",dri:"Anish",alloc:1.0,rmaDri:"N/A",rmaAlloc:0,alloc2027:1.0,rmaAlloc2027:0},
   {name:"VEGA/GEN1",cm:"FLEX",fieldStatus:"EOM/EOS",dri:"Brijesh",alloc:0.4,rmaDri:"N/A",rmaAlloc:0,alloc2027:0.16,rmaAlloc2027:0},
   {name:"GEN2 (PICCINO/UNICO)",cm:"CNT",fieldStatus:"EOM",dri:"Brijesh",alloc:0.8,rmaDri:"Mai",rmaAlloc:0,alloc2027:0.4,rmaAlloc2027:0},
   {name:"24W PSU",cm:"LUX",fieldStatus:"EOM",dri:"Doc",alloc:0.4,rmaDri:"Mai",rmaAlloc:0,alloc2027:0.16,rmaAlloc2027:0},
