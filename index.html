@@ -399,7 +399,7 @@ var deliverables = [
 {phase:"OK2RAMP",id:"FPQE-06-02",name:"EFFA Prep Workflow",scope:"Intl. / Dom. Trackers",criteria:"Finalize international and domestic tracking templates for the market launch window."},
 {phase:"OK2RAMP",id:"FPQE-06-03",name:"Incident Management Prep",scope:"Recall Playbook",criteria:"Prepare localized containment playbooks in case of early factory design escapes."},
 {phase:"OK2FWD",id:"FPQE-07-01",name:"FW Release Doc Review",scope:"Software / Firmware",criteria:"Review firmware stability, mesh performance, and bug-fix verification logs."},
-{phase:"OK2FWD",id:"FPQE-07-02",name:"AQL Verification",scope:"Shipping Logs",criteria:"Review with Factory or Packaging team that initial production pallet lots meet Acceptable Quality Limit standards."},
+{phase:"OK2FWD",id:"FPQE-07-02",name:"FGA Verification",scope:"Cosmetic Inspection",criteria:"Review with Factory or Packaging team that initial production pallet lots meet cosmetic standards."},
 {phase:"OK2SHIP",id:"FPQE-08-01",name:"Product Release Sign-off",scope:"FGA",criteria:"Review Quality metrics in OK2SHIP report."},
 {phase:"OK2SHIP",id:"FPQE-08-02",name:"EFFA Pipeline Activation",scope:"Data Ingestion Hub",criteria:"Initialize real-time ingestion loops across NetSuite, Zendesk, Looker, and Jira."},
 {phase:"OK2SHIP",id:"FPQE-08-03",name:"RMA Return Line Go-Live",scope:"3PL Infrastructure",criteria:"Open active triage and tear-down operations at domestic and international centers."},
@@ -752,7 +752,7 @@ function renderOwner(ownerName) {
     '<div class="info-card"><div class="label">Owner</div><div class="value" style="font-size:1.3rem">' + owner.name + '</div></div>' +
     '<div class="info-card"><div class="label">Total Programs</div><div class="value">' + totalItems + '</div></div>' +
     '<div class="info-card"><div class="label">NPI / Sustaining</div><div class="value">' + npiCount + ' / ' + sustainCount + '</div></div>' +
-    '<div class="info-card"><div class="label">Completion</div><div class="value" style="color:#22c55e">' + pct + '%</div></div>';
+    '<div class="info-card"><div class="label">Phase Completion</div><div class="value" style="color:#22c55e">' + pct + '%</div></div>';
 
   document.getElementById("ownerTableTitle").textContent = owner.name + " - Assigned Programs";
 
